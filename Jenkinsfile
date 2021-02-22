@@ -1,7 +1,6 @@
 pipeline {
     agent any
- 
-    stages {
+     stages {
         stage('Checkout') {
             steps {        
             checkout([$class: 'GitSCM', branches: [[name: 'main']], extensions: [[$class: 'CheckoutOption', timeout: 5], [$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 5]], userRemoteConfigs: [[url: 'https://github.com/j-huidrom/devops.git']]])
