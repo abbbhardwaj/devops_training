@@ -10,11 +10,13 @@ pipeline {
         }
         stage('Quality Check') {
             steps {
+            
                 echo 'QA verified'
             }
         }
         stage('Security Check') {
             steps {
+            	dependencyCheck additionalArguments: '--scan=. --format=HTML', odcInstallation: 'OWASP-Dependency-Check'
                 echo 'All security checks done'
             }
         }
