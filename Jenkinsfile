@@ -1,6 +1,8 @@
 pipeline {
     agent any
- 
+ 	tools{
+ 		maven 'Maven_3.6.3'
+ 	}
     stages {
         stage('Checkout') {
             steps {        
@@ -22,6 +24,7 @@ pipeline {
         }
         stage('Build Push App') {
             steps {
+            sh "mvn -version"
                sh "mvn clean install"
             }
         }
