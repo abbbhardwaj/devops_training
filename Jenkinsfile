@@ -4,9 +4,17 @@ pipeline {
  		maven 'Maven_3.6.3'
  	}
     stages {
+    	stage('Initialize') {
+            steps {
+                echo "PATH = ${PATH}"
+                echo "M2_HOME = ${M2_HOME}"
+            }
+        }
         stage('Checkout') {
             steps {        
-            			echo "parameter : ${testParam}"
+             checkout([$class: 'GitSCM', branches: [[name: 'main']], extensions: [[$class: 'CheckoutOption', timeout: 5], [$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 5]], userRemoteConfigs: [[url: 'https://github.com/abbbhardwaj/devops_training.git']]])
+            
+             echo "parameter : ${testParam}"
              echo 'Checkout source code from git'
             }
         }
@@ -24,7 +32,7 @@ pipeline {
         }
         stage('Build Push App') {
             steps {
-            sh "mvn -version"
+               sh "mvn -version"
                sh "mvn clean install"
             }
         }
