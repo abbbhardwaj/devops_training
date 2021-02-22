@@ -1,38 +1,40 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage("on_commit"){
-            steps{
-            echo "this is commit stage"
-        }}
-        stage("quality_check"){
-            steps{
-   
-            echo "QA check"
+ 
+    stages {
+        stage('Checkout') {
+            steps {        
+            checkout([$class: 'GitSCM', branches: [[name: 'main']], extensions: [[$class: 'CheckoutOption', timeout: 5], [$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 5]], userRemoteConfigs: [[url: 'https://github.com/j-huidrom/devops.git']]])
+
+ 
+
+             echo 'Checkout source code from git'
+            }
+        }
+        stage('Quality Check') {
+            steps {
+                echo 'QA verified'
+            }
+        }
+        stage('Security Check') {
+            steps {
+                echo 'All security checks done'
+            }
+        }
+        stage('Build Push App') {
+            steps {
+               sh "mvn clean install"
+            }
+        }
+         stage('Deploy') {
+            steps {
+                echo 'Deployment done'
+            }
+        }
+         stage('Post Deployment Check') {
+            steps {
+                echo 'All deployment check done'
+            }
         }
     }
-        stage("security_check"){
-            steps{
-       
-            echo "Security check"
-        
-    }}
-        stage("build_push_app"){
-            steps{
-          
-            echo "Build Push APP"
-        }
-    }
-        stage("deploy_app"){
-            steps{
-            
-            echo "Deploy APP"
-        }
-    }
-        stage("post_dep_check"){
-            steps{
-            
-            echo "Post Dep check"
-        }
-    }
-}}
+}
