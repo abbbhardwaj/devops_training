@@ -31,16 +31,24 @@ pipeline {
         }
         stage('Build Push App') {
             steps {
-               sh "mvn -version"
-               sh "mvn clean install"
+                sh "mvn clean install"
+            }
+        }   
+        stage('Kill previous deploy ment') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    sh "fuser -k 8083/tcp"
+                }
             }
         }
-         stage('Deploy') {
+
+        stage('Deploy') {
             steps {
+                sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
                 echo 'Deployment done'
             }
         }
-         stage('Post Deployment Check') {
+        stage('Post Deployment Check') {
             steps {
                 echo 'All deployment check done'
             }
