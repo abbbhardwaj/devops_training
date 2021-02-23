@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Quality Check') {
             steps {
-            	echo 'newman -v'
+            	sh 'newman -v'
                 echo 'QA verified'
             }
         }
