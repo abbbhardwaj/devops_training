@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Quality Check') {
             steps {
-            	echo 'sudo newman -v'
+            	echo 'newman -v'
                 echo 'QA verified'
             }
         }
