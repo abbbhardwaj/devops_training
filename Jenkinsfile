@@ -51,15 +51,17 @@ pipeline {
         stage('Kill previous deploy ment') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                    //sh "fuser -k 8083/tcp"
+                    sh "fuser -k 8083/tcp"
                 }
             }
         }
 
         stage('Deploy') {
             steps {
+            	//adding sleep
+            	sleep(time:10,unit:"SECONDS")
             	//sh "docker run -d springbootimage:latest"
-               // sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
+                sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
                 echo 'Deployment done'
             }
         }
