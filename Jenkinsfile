@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {  dockerfile true }
  	tools{
  		maven 'Maven_3.6.3'
  	}
@@ -38,9 +38,7 @@ pipeline {
           }
         }
         stage('Build Push App') {
-        agent {
-            docker { image 'springbootimage:latest' }
-            }
+        
             steps {
                 sh "mvn clean install"
                 sh "docker info "
