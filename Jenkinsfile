@@ -58,7 +58,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-            	//adding sleep
+            	echo 'sleep for 10 seconds'
             	sleep(time:10,unit:"SECONDS")
             	//sh "docker run -d springbootimage:latest"
                 sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
@@ -67,7 +67,7 @@ pipeline {
         }
         stage('Post Deployment Check') {
             steps {
-                sh "/usr/local/bin/newman run BhavyaCollection.postman_collection.json -r html,cli"
+                sh "/usr/local/bin/newman run abhinav.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
