@@ -33,7 +33,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8083/register/student/",
+					"raw": "http://localhost:8083/register/student",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -65,7 +65,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8083/student/allstudent/",
+					"raw": "http://localhost:8083/student/allstudent",
 					"protocol": "http",
 					"host": [
 						"localhost"
