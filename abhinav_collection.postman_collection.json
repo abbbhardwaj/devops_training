@@ -33,7 +33,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://vlmaz2021tn13.fisdev.local:8083/register/student/",
+					"raw": "http://localhost:8083/register/student/",
 					"protocol": "http",
 					"host": [
 						"vlmaz2021tn13",
@@ -67,7 +67,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://vlmaz2021tn13.fisdev.local:8083/student/allstudent/",
+					"raw": "http://localhost:8083/student/allstudent/",
 					"protocol": "http",
 					"host": [
 						"vlmaz2021tn13",
