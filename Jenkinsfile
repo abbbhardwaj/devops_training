@@ -17,17 +17,24 @@ pipeline {
              echo 'Checkout source code from git'
             }
         }
-        stage('Quality Check') {
-            steps {
+        
+       stage(' Parallel Quality and Security Check') {
+        parallel {
+        	stage('Quality Check'){
+        	 agent any 
+             steps {
             	sh '/usr/local/bin/newman -v'
                 echo 'QA verified'
-            }
-        }
+           		 }
+               }
         stage('Security Check') {
+        	agent any
             steps {
             	dependencyCheck additionalArguments: '--scan=. --format=HTML', odcInstallation: 'OWASP-Dependency-Check'
                 echo 'All security checks done'
+             }
             }
+          }
         }
         stage('Build Push App') {
             steps {
@@ -48,8 +55,9 @@ pipeline {
                 echo 'Deployment done'
             }
         }
-        stage('Post Deployment Check') {
+        tage('Post Deployment Check') {
             steps {
+                sh "/usr/local/bin/newman run BhavyaCollection.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
