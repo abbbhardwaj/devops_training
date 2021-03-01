@@ -43,7 +43,7 @@ pipeline {
             }
             steps {
                 sh "mvn clean install"
-                sh "docker info"
+                sh "docker info "
                // sh "docker build -t springbootimage:latest ."
                 echo "docker build done"
                 
