@@ -39,6 +39,10 @@ pipeline {
         stage('Build Push App') {
             steps {
                 sh "mvn clean install"
+                sh "docker build -t springbootimage:latest ."
+                echo "docker build done"
+                sh "docker images"
+                echo "All docker images present on node"
             }
         }   
         stage('Kill previous deployment') {
@@ -51,7 +55,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
+            	sh "docker run -d springbootimage:latest"
+                //sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
                 echo 'Deployment done'
             }
         }
