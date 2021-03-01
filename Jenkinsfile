@@ -1,5 +1,5 @@
 pipeline {
-    agent {  dockerfile true }
+    agent any
  	tools{
  		maven 'Maven_3.6.3'
  	}
@@ -38,10 +38,11 @@ pipeline {
           }
         }
         stage('Build Push App') {
-        
+        agent {
+    
+         //docker { image 'springbootimage:latest' }
             steps {
                 sh "mvn clean install"
-                sh "docker info "
                // sh "docker build -t springbootimage:latest ."
                 echo "docker build done"
                 
@@ -49,7 +50,7 @@ pipeline {
                 echo "All docker images present on node"
             }
         }   
-        stage('Kill previous deploy ment') {
+        stage('Kill previous deployment') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh "fuser -k 8083/tcp"
@@ -75,24 +76,6 @@ pipeline {
         }
         
     }
-  post {
-    always {
-    sh label: '', script: '''cd /newman
-                                tar -czf report.html output'''
-	emailext mimeType: 'text/html',
-        subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
-        body: """
-          <html><body>
-          <div>Job: ${env.JOB_NAME}</div>
-          <div>Build ID: ${env.BUILD_NUMBER}</div>
-          <div>Status: ${currentBuild.currentResult}</div>
-          <div>More info at: ${env.BUILD_URL}</div>
-          </body></html>
-        """,
-        to: """abhinav.bhardwaj@fisglobal.com""",
-        attachLog: true,
-        compressLog: false,
-        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
-}
-}
+  office365ConnectorSend message: "Test email from jenkins", status:${currentBuild.currentResult}, webhookUrl:'https://fisglobal.webhook.office.com/webhookb2/46481ee8-19ae-4f09-9c08-b03fbd19bec5@e3ff91d8-34c8-4b15-a0b4-18910a6ac575/JenkinsCI/c033c9f798554aea8f07d29b974f99ad/46481ee8-19ae-4f09-9c08-b03fbd19bec5'
+
 }
