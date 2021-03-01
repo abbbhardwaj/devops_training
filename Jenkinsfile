@@ -61,8 +61,11 @@ pipeline {
                 echo 'All deployment check done'
             }
         }
+        
+        notify()
     }
-    post {
+  post {
+        always {
 	emailext mimeType: 'text/html',
         subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
         body: """
@@ -77,5 +80,5 @@ pipeline {
         attachLog: true,
         compressLog: false,
         recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
-}
+}}
 }
