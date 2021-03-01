@@ -57,7 +57,7 @@ pipeline {
         }
         stage('Post Deployment Check') {
             steps {
-                sh "/usr/local/bin/newman run abhinav_collection_1.postman_collection.json -r html,cli"
+                sh "/usr/local/bin/newman run abhinav_collection.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
