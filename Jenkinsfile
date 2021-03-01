@@ -57,9 +57,25 @@ pipeline {
         }
         stage('Post Deployment Check') {
             steps {
-                sh "/usr/local/bin/newman run abhinav_collection.postman_collection.json -r html,cli"
+                sh "/usr/local/bin/newman run abhinav_collection_1.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
     }
+    post {
+	emailext mimeType: 'text/html',
+        subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
+        body: """
+          <html><body>
+          <div>Job: ${env.JOB_NAME}</div>
+          <div>Build ID: ${env.BUILD_NUMBER}</div>
+          <div>Status: ${currentBuild.currentResult}</div>
+          <div>More info at: ${env.BUILD_URL}</div>
+          </body></html>
+        """,
+        to: """abhinav.bhardwaj@fisglobal.com""",
+        attachLog: true,
+        compressLog: false,
+        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+}
 }
