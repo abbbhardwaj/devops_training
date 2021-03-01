@@ -38,9 +38,12 @@ pipeline {
           }
         }
         stage('Build Push App') {
-         //docker { image 'springbootimage:latest' }
+        agent {
+            docker { image 'springbootimage:latest' }
+            }
             steps {
                 sh "mvn clean install"
+                sh "docker info"
                // sh "docker build -t springbootimage:latest ."
                 echo "docker build done"
                 
@@ -76,6 +79,8 @@ pipeline {
     }
   post {
     always {
+    sh label: '', script: '''cd /newman
+                                tar -czf report.html output'''
 	emailext mimeType: 'text/html',
         subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
         body: """
