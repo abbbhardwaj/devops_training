@@ -14,7 +14,8 @@ pipeline {
             steps {        
             
              echo "parameter : ${testParam}"
-             echo 'Checkout source code from git'
+            checkout([$class: 'GitSCM', branches: [[name: 'main']], extensions: [[$class: 'CheckoutOption', timeout: 5], [$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 5]], userRemoteConfigs: [[url: 'https://github.com/abbbhardwaj/devops_training.git']]]) 
+                  echo 'Checkout source code from git' 
             }
         }
         
@@ -37,10 +38,12 @@ pipeline {
           }
         }
         stage('Build Push App') {
+         //docker { image 'springbootimage:latest' }
             steps {
                 sh "mvn clean install"
-                sh "docker build -t springbootimage:latest ."
+               // sh "docker build -t springbootimage:latest ."
                 echo "docker build done"
+                
                 sh "docker images"
                 echo "All docker images present on node"
             }
@@ -55,8 +58,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-            	sh "docker run -d springbootimage:latest"
-                //sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
+            	//sh "docker run -d springbootimage:latest"
+                sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ./target/spring-boot-rest-2-0.0.1-SNAPSHOT.jar &"
                 echo 'Deployment done'
             }
         }
