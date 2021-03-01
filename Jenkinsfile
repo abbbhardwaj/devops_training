@@ -41,7 +41,7 @@ pipeline {
                 sh "mvn clean install"
             }
         }   
-        stage('Kill previous deploy ment') {
+        stage('Kill previous deployment') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh "fuser -k 8083/tcp"
@@ -57,7 +57,7 @@ pipeline {
         }
         stage('Post Deployment Check') {
             steps {
-                sh "/usr/local/bin/newman run BhavyaCollection.postman_collection.json -r html,cli"
+                sh "/usr/local/bin/newman run abhinav_collection.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
