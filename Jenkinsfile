@@ -44,11 +44,11 @@ pipeline {
                // sh "docker build -t springbootimage:latest ."
                 echo "docker build done"
                 
-                sh "docker images"
+                //sh "docker images"
                 echo "All docker images present on node"
             }
         }   
-        stage('Kill previous deployment') {
+        stage('Kill previous deploy ment') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh "fuser -k 8083/tcp"
@@ -65,7 +65,7 @@ pipeline {
         }
         stage('Post Deployment Check') {
             steps {
-                sh "/usr/local/bin/newman run abhinav_collection.postman_collection.json -r html,cli"
+                sh "/usr/local/bin/newman run BhavyaCollection.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
         }
