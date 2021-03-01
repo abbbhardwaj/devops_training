@@ -55,7 +55,7 @@ pipeline {
                 echo 'Deployment done'
             }
         }
-        tage('Post Deployment Check') {
+        stage('Post Deployment Check') {
             steps {
                 sh "/usr/local/bin/newman run BhavyaCollection.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
