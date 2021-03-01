@@ -73,13 +73,5 @@ pipeline {
                 sh "/usr/local/bin/newman run abhinav.postman_collection.json -r html,cli"
                 echo 'All deployment check done'
             }
-        }
-        
-       stage('email notification using office 365 connector'){
-       steps{
-       	   office365ConnectorSend message: "Test email from jenkins", status:${currentBuild.currentResult}, webhookUrl:'https://fisglobal.webhook.office.com/webhookb2/46481ee8-19ae-4f09-9c08-b03fbd19bec5@e3ff91d8-34c8-4b15-a0b4-18910a6ac575/JenkinsCI/c033c9f798554aea8f07d29b974f99ad/46481ee8-19ae-4f09-9c08-b03fbd19bec5'
-       	
-       }
-       }
-    
+        }  
 }
